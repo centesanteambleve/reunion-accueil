@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/MichelNOEL/Downloads/index_8.html -->
+<!-- saved from url=(0050)file:///C:/Users/MichelNOEL/Downloads/index_9.html -->
 <html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -12,9 +12,9 @@
 <style>
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   :root{
-    --teal:#0F6E56;--teal-light:#E1F5EE;--teal-mid:#5DCAA5;
+    --teal:#0F6E56;--teal-deep:#0a4d3c;--teal-light:#E1F5EE;--teal-mid:#5DCAA5;
     --bg:#ffffff;--bg2:#f7f7f5;--bg3:#f0f0ec;
-    --text:#1a1a1a;--text2:#6b6b6b;--text3:#a0a0a0;
+    --text:#1a1a1a;--text2:#5a5a5a;--text3:#909090;
     --border:#e0e0da;--border2:#c8c8c0;
     --radius:10px;--radius-lg:14px;
     --word:#1B4DB7;--pdf:#C0392B;
@@ -58,12 +58,37 @@
   .back-btn{padding:7px 11px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--bg);font-size:12.5px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;white-space:nowrap}
   .result-label{font-size:14px;font-weight:500;color:var(--text)}
 
-  .doc-container{margin:14px 14px 0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);max-height:55vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
-  .doc-text{padding:14px;font-size:12px;color:var(--text);line-height:1.75;white-space:pre-wrap;font-family:'Menlo','Courier New',monospace}
+  .doc-frame{margin:14px 14px 0;background:var(--bg2);border-radius:var(--radius-lg);padding:10px;max-height:60vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .doc-paper{background:white;border-radius:8px;padding:22px 20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 
+  /* === DOCUMENT INTERNE === */
+  .md-header{text-align:center;padding-bottom:14px;border-bottom:2px solid var(--teal);margin-bottom:18px}
+  .md-title{font-family:Georgia,'Times New Roman',serif;font-size:18px;font-weight:600;color:var(--teal-deep);letter-spacing:-.01em;line-height:1.25}
+  .md-subtitle{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.14em;margin-top:6px}
+
+  .md-meta{background:var(--teal-light);border-left:3px solid var(--teal);padding:11px 14px;margin-bottom:20px;border-radius:0 8px 8px 0}
+  .md-meta-date{font-weight:600;font-size:13.5px;color:var(--teal-deep);text-transform:capitalize;margin-bottom:6px}
+  .md-meta-row{font-size:12px;color:var(--text2);line-height:1.55;margin-top:3px}
+  .md-meta-row b{color:var(--text);font-weight:600}
+
+  .md-section-title{font-family:Georgia,serif;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.16em;color:var(--teal);margin:18px 0 14px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+
+  .md-item{margin-bottom:16px;padding-bottom:14px;border-bottom:1px dashed var(--border)}
+  .md-item:last-of-type{border-bottom:none;margin-bottom:8px}
+  .md-item-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:5px}
+  .md-num{width:22px;height:22px;background:var(--teal);color:white;border-radius:50%;text-align:center;line-height:22px;font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px}
+  .md-item-title{font-weight:600;font-size:14px;color:var(--text);line-height:1.35;flex:1}
+  .md-item-desc{font-size:12.5px;color:var(--text2);line-height:1.6;margin-left:32px}
+
+  .md-plaud{margin-top:22px;padding:13px 15px;background:#fafaf7;border-radius:8px;border:1px dashed var(--teal-mid)}
+  .md-plaud-title{font-weight:600;font-size:12px;color:var(--teal);margin-bottom:5px;text-transform:uppercase;letter-spacing:.08em}
+  .md-plaud-empty{font-size:11.5px;color:var(--text3);font-style:italic}
+  .md-plaud-content{font-size:12.5px;color:var(--text);line-height:1.65;white-space:pre-wrap}
+
+  /* === PLAUD INPUT === */
   .plaud-wrap{margin:12px 14px}
   .plaud-toggle{width:100%;padding:11px 14px;border:1px solid var(--teal-mid);border-radius:var(--radius);background:var(--teal-light);color:var(--teal);font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:inherit}
-  .plaud-toggle .chev{font-size:16px;transition:transform .2s}
+  .plaud-toggle .chev{font-size:16px}
   .plaud-body{margin-top:8px;display:none}
   .plaud-label{font-size:11.5px;color:var(--text2);margin-bottom:6px}
   .plaud-textarea{width:100%;min-height:100px;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;color:var(--text);background:var(--bg);resize:vertical;font-family:inherit;line-height:1.6;outline:none}
@@ -108,7 +133,7 @@
   </div>
 
   <div class="api-warning" id="apiWarning" style="display: block;">
-    ⚠️ <strong>Mode standard activé.</strong> Sans clé API Anthropic, l'app génère un canevas de base (toujours fonctionnel). Appuyez sur ⚙️ pour ajouter une clé et activer la génération IA.
+    ⚠️ <strong>Mode standard.</strong> Sans clé API Anthropic, l'IA n'enrichit pas les descriptions. Appuyez sur ⚙️ pour ajouter une clé.
   </div>
 
   <div class="section">
@@ -156,8 +181,8 @@ Ex :
     <span class="result-label" id="presenceLabel"></span>
   </div>
 
-  <div class="doc-container">
-    <div class="doc-text" id="docText"></div>
+  <div class="doc-frame">
+    <div class="doc-paper" id="docPaper"></div>
   </div>
 
   <div class="plaud-wrap">
@@ -166,8 +191,8 @@ Ex :
       <span class="chev" id="plaudChev">›</span>
     </button>
     <div class="plaud-body" id="plaudBody">
-      <div class="plaud-label" style="margin-top:8px">Collez ici le résumé généré par Plaud AI après la réunion :</div>
-      <textarea class="plaud-textarea" id="plaudInput" placeholder="Collez le texte du résumé Plaud AI ici..."></textarea>
+      <div class="plaud-label" style="margin-top:8px">Collez ici le résumé Plaud AI après la réunion :</div>
+      <textarea class="plaud-textarea" id="plaudInput" placeholder="Collez le texte du résumé Plaud AI ici..." oninput="updatePlaudRender()"></textarea>
     </div>
   </div>
 
@@ -183,7 +208,7 @@ Ex :
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title">⚙️ Paramètres</div>
-    <div class="modal-sub">La génération IA est optionnelle. Sans clé, l'app utilise un canevas standard.</div>
+    <div class="modal-sub">La clé Anthropic est optionnelle. Sans elle, l'app utilise vos points tels quels.</div>
 
     <label>Clé API Anthropic (optionnel)</label>
     <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off">
@@ -207,14 +232,14 @@ const MEMBERS = [
 
 var presence = {};
 var apiKey = "";
+var docData = null;  // { date, presents, absents, points: [{title, description}], plaudSummary }
 
 function init() {
   apiKey = localStorage.getItem("csa-apikey") || "";
   var saved = localStorage.getItem("csa-presence");
-  for (var i = 0; i < MEMBERS.length; i++) {
-    var m = MEMBERS[i];
+  MEMBERS.forEach(function(m){
     presence[m.id] = saved ? JSON.parse(saved)[m.id] !== false : m.present;
-  }
+  });
   document.getElementById("dateInput").value = new Date().toISOString().split("T")[0];
   renderMembers();
   checkApiKey();
@@ -241,6 +266,19 @@ function formatDateFR(v) {
   return d.toLocaleDateString("fr-BE", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
 }
 
+function escapeHtml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function parseAIJSON(text) {
+  try { return JSON.parse(text); } catch(e){}
+  var cleaned = text.replace(/```json\s*/g, "").replace(/```\s*/g, "").trim();
+  try { return JSON.parse(cleaned); } catch(e){}
+  var m = text.match(/\{[\s\S]*\}/);
+  if (m) { try { return JSON.parse(m[0]); } catch(e){} }
+  return null;
+}
+
 function generate() {
   var dateVal = document.getElementById("dateInput").value;
   var agenda = document.getElementById("agendaInput").value.trim();
@@ -253,8 +291,9 @@ function generate() {
   var pres = MEMBERS.filter(function(m){return presence[m.id]}).map(function(m){return m.name});
   var abs  = MEMBERS.filter(function(m){return !presence[m.id]}).map(function(m){return m.name});
 
-  function showResult(text) {
-    document.getElementById("docText").textContent = text;
+  function showResult(data) {
+    docData = data;
+    renderDocument();
     document.getElementById("resultDateLabel").textContent = formatDateFR(dateVal);
     document.getElementById("presenceLabel").textContent = pres.length + " présents" + (abs.length ? ", " + abs.length + " absent(s)" : "");
     document.getElementById("screen-config").style.display = "none";
@@ -264,8 +303,16 @@ function generate() {
     btn.innerHTML = "✨ Générer le canevas";
   }
 
+  function fallback() {
+    var pts = agenda.split("\n")
+      .map(function(l){return l.replace(/^[\•\-\*\d\.]+\s*/, "").trim()})
+      .filter(Boolean)
+      .map(function(t){return {title:t, description:""}});
+    showResult({date:dateVal, presents:pres, absents:abs, points:pts, plaudSummary:""});
+  }
+
   if (apiKey) {
-    var prompt = "Tu es un assistant de réunion pour l'équipe d'accueil du Centre de Santé de l'Amblève (Belgique).\n\nGénère un canevas de réunion hebdomadaire structuré en français à partir de :\n\nDATE : " + formatDateFR(dateVal) + "\nPRÉSENTS : " + pres.join(", ") + "\n" + (abs.length > 0 ? "ABSENTS : " + abs.join(", ") : "Tous présents") + "\n\nPOINTS DICTÉS :\n" + agenda + "\n\nInstructions :\n- En-tête clair avec date, présents, absents\n- Numéroter et titrer chaque point\n- Courte description pour chaque point\n- Après chaque point : 'Notes / Décisions :' avec 2 lignes (—)\n- Sections finales 'Actions à suivre' et 'Prochaine réunion'\n- Section 'Résumé Plaud AI' à compléter après la réunion\n- Ton professionnel, format texte simple avec emojis pour titres";
+    var prompt = "Tu es un assistant de réunion pour l'équipe d'accueil du Centre de Santé de l'Amblève (Belgique).\n\nÀ partir des points dictés ci-dessous par le responsable, structure-les en un objet JSON. RÉPONDS UNIQUEMENT AVEC LE JSON, rien d'autre, pas de markdown, pas de phrase d'introduction.\n\nFormat strict :\n{\n  \"points\": [\n    {\n      \"title\": \"Titre court et clair du point (5-10 mots)\",\n      \"description\": \"Description en 1 ou 2 phrases qui détaille le contexte, l'objectif ou les enjeux de ce point pour l'équipe.\"\n    }\n  ]\n}\n\nGarde un ton professionnel et bienveillant. La description doit aider l'équipe à comprendre pourquoi le point est à l'ordre du jour.\n\nPoints dictés :\n" + agenda;
 
     fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -275,61 +322,144 @@ function generate() {
     .then(function(r){ return r.json(); })
     .then(function(data){
       var block = data.content && data.content.find(function(b){return b.type === "text"});
-      var text = (block && block.text) ? block.text : "";
-      if (!text) throw new Error("Réponse vide");
-      showResult(text);
+      var raw = (block && block.text) ? block.text : "";
+      var parsed = parseAIJSON(raw);
+      if (parsed && parsed.points && parsed.points.length) {
+        showResult({date:dateVal, presents:pres, absents:abs, points:parsed.points, plaudSummary:""});
+      } else {
+        throw new Error("Format invalide");
+      }
     })
     .catch(function(e){
       showToast("API indisponible – canevas de base utilisé");
-      showResult(buildTemplate(dateVal, pres, abs, agenda));
+      fallback();
     });
   } else {
-    showResult(buildTemplate(dateVal, pres, abs, agenda));
+    fallback();
   }
 }
 
-function buildTemplate(dateVal, pres, abs, agendaRaw) {
-  var pts = agendaRaw.split("\n").map(function(l){return l.replace(/^[\•\-\*\d\.]+\s*/, "").trim()}).filter(Boolean);
-  var d = "";
-  d += "═══════════════════════════════════════\n";
-  d += "  RÉUNION HEBDOMADAIRE – ACCUEIL\n";
-  d += "  Centre de Santé de l'Amblève\n";
-  d += "═══════════════════════════════════════\n\n";
-  d += "📅 Date     : " + formatDateFR(dateVal) + "\n";
-  d += "👥 Présents : " + pres.join(", ") + "\n";
-  if (abs.length) d += "❌ Absents  : " + abs.join(", ") + "\n";
-  d += "\n───────────────────────────────────────\n";
-  d += "📋 ORDRE DU JOUR\n";
-  d += "───────────────────────────────────────\n\n";
-  pts.forEach(function(pt, i){
-    d += (i+1) + ". " + pt + "\n\n";
-    d += "   📝 Notes / Décisions :\n";
-    d += "   — ..................................\n";
-    d += "   — ..................................\n\n";
+function renderDocument() {
+  if (!docData) return;
+  document.getElementById("docPaper").innerHTML = buildDocHTML(docData);
+}
+
+function updatePlaudRender() {
+  if (!docData) return;
+  docData.plaudSummary = document.getElementById("plaudInput").value;
+  renderDocument();
+}
+
+function buildDocHTML(d) {
+  var h = '';
+  h += '<div class="md-header">';
+  h += '  <div class="md-title">Réunion hebdomadaire</div>';
+  h += '  <div class="md-subtitle">Équipe Accueil · Centre de Santé de l\'Amblève</div>';
+  h += '</div>';
+
+  h += '<div class="md-meta">';
+  h += '  <div class="md-meta-date">' + escapeHtml(formatDateFR(d.date)) + '</div>';
+  h += '  <div class="md-meta-row"><b>Présents</b> · ' + escapeHtml(d.presents.join(", ")) + '</div>';
+  if (d.absents.length) {
+    h += '  <div class="md-meta-row"><b>Absents</b> · ' + escapeHtml(d.absents.join(", ")) + '</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="md-section-title">Ordre du jour</div>';
+  d.points.forEach(function(pt, i){
+    h += '<div class="md-item">';
+    h += '  <div class="md-item-head">';
+    h += '    <div class="md-num">' + (i+1) + '</div>';
+    h += '    <div class="md-item-title">' + escapeHtml(pt.title) + '</div>';
+    h += '  </div>';
+    if (pt.description) {
+      h += '  <div class="md-item-desc">' + escapeHtml(pt.description) + '</div>';
+    }
+    h += '</div>';
   });
-  d += "───────────────────────────────────────\n";
-  d += "✅ ACTIONS À SUIVRE\n";
-  d += "───────────────────────────────────────\n\n";
-  for (var i = 0; i < 3; i++) {
-    d += "   Qui : ........  Quoi : ..............  Quand : ......\n";
+
+  h += '<div class="md-plaud">';
+  h += '  <div class="md-plaud-title">🎙️ Résumé Plaud AI</div>';
+  if (d.plaudSummary && d.plaudSummary.trim()) {
+    h += '  <div class="md-plaud-content">' + escapeHtml(d.plaudSummary).replace(/\n/g, '<br>') + '</div>';
+  } else {
+    h += '  <div class="md-plaud-empty">À intégrer après la réunion</div>';
   }
-  d += "\n───────────────────────────────────────\n";
-  d += "📅 PROCHAINE RÉUNION\n";
-  d += "───────────────────────────────────────\n\n";
-  d += "   Date          : ..............................\n";
-  d += "   Points prévus : ..............................\n\n";
-  d += "───────────────────────────────────────\n";
-  d += "🎙️ RÉSUMÉ PLAUD AI\n";
-  d += "───────────────────────────────────────\n\n";
-  d += "   (À intégrer après la réunion)\n";
-  return d;
+  h += '</div>';
+  return h;
 }
 
-function getFullDoc() {
-  var doc   = document.getElementById("docText").textContent;
-  var plaud = document.getElementById("plaudInput").value.trim();
-  if (!plaud) return doc;
-  return doc.replace("(À intégrer après la réunion)", "") + "\n\n" + plaud;
+function buildPlainText() {
+  if (!docData) return "";
+  var d = docData;
+  var t = "";
+  t += "RÉUNION HEBDOMADAIRE – ACCUEIL\n";
+  t += "Équipe Accueil · Centre de Santé de l'Amblève\n";
+  t += "═══════════════════════════════════════\n\n";
+  t += "📅 " + formatDateFR(d.date) + "\n";
+  t += "👥 Présents : " + d.presents.join(", ") + "\n";
+  if (d.absents.length) t += "❌ Absents  : " + d.absents.join(", ") + "\n";
+  t += "\n───────────────────────────────────────\n";
+  t += "ORDRE DU JOUR\n";
+  t += "───────────────────────────────────────\n\n";
+  d.points.forEach(function(pt, i){
+    t += (i+1) + ". " + pt.title + "\n";
+    if (pt.description) t += "   " + pt.description + "\n";
+    t += "\n";
+  });
+  t += "\n🎙️ RÉSUMÉ PLAUD AI\n";
+  if (d.plaudSummary && d.plaudSummary.trim()) {
+    t += "\n" + d.plaudSummary + "\n";
+  } else {
+    t += "\n(à intégrer après la réunion)\n";
+  }
+  return t;
+}
+
+function buildExportHTML() {
+  if (!docData) return "";
+  var d = docData;
+  var inner = '';
+  inner += '<div style="text-align:center;padding-bottom:14px;border-bottom:2px solid #0F6E56;margin-bottom:20px">';
+  inner += '<div style="font-family:Georgia,serif;font-size:22pt;font-weight:bold;color:#0a4d3c">Réunion hebdomadaire</div>';
+  inner += '<div style="font-size:10pt;color:#5a5a5a;text-transform:uppercase;letter-spacing:0.14em;margin-top:6px">Équipe Accueil · Centre de Santé de l\'Amblève</div>';
+  inner += '</div>';
+
+  inner += '<table style="width:100%;border-collapse:collapse;background:#E1F5EE;margin-bottom:20px">';
+  inner += '<tr><td style="border-left:3px solid #0F6E56;padding:11px 14px">';
+  inner += '<div style="font-weight:bold;font-size:12pt;color:#0a4d3c;margin-bottom:6px;text-transform:capitalize">' + escapeHtml(formatDateFR(d.date)) + '</div>';
+  inner += '<div style="font-size:11pt;color:#5a5a5a"><b style="color:#1a1a1a">Présents</b> · ' + escapeHtml(d.presents.join(", ")) + '</div>';
+  if (d.absents.length) {
+    inner += '<div style="font-size:11pt;color:#5a5a5a;margin-top:3px"><b style="color:#1a1a1a">Absents</b> · ' + escapeHtml(d.absents.join(", ")) + '</div>';
+  }
+  inner += '</td></tr></table>';
+
+  inner += '<div style="font-family:Georgia,serif;font-size:12pt;font-weight:bold;text-transform:uppercase;letter-spacing:0.16em;color:#0F6E56;margin:18px 0 14px;padding-bottom:6px;border-bottom:1px solid #e0e0da">Ordre du jour</div>';
+
+  d.points.forEach(function(pt, i){
+    inner += '<table style="width:100%;border-collapse:collapse;margin-bottom:14px"><tr>';
+    inner += '<td style="width:34px;vertical-align:top;padding-top:2px">';
+    inner += '<div style="width:24px;height:24px;background:#0F6E56;color:white;border-radius:50%;text-align:center;line-height:24px;font-size:11pt;font-weight:bold">' + (i+1) + '</div>';
+    inner += '</td>';
+    inner += '<td style="vertical-align:top">';
+    inner += '<div style="font-weight:bold;font-size:12pt;color:#1a1a1a;margin-bottom:4px">' + escapeHtml(pt.title) + '</div>';
+    if (pt.description) {
+      inner += '<div style="font-size:11pt;color:#5a5a5a;line-height:1.55">' + escapeHtml(pt.description) + '</div>';
+    }
+    inner += '</td></tr></table>';
+  });
+
+  inner += '<table style="width:100%;border-collapse:collapse;background:#fafaf7;margin-top:22px">';
+  inner += '<tr><td style="border:1px dashed #5DCAA5;padding:13px 15px;border-radius:8px">';
+  inner += '<div style="font-weight:bold;font-size:11pt;color:#0F6E56;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em">🎙️ Résumé Plaud AI</div>';
+  if (d.plaudSummary && d.plaudSummary.trim()) {
+    inner += '<div style="font-size:11pt;color:#1a1a1a;line-height:1.6;white-space:pre-wrap">' + escapeHtml(d.plaudSummary) + '</div>';
+  } else {
+    inner += '<div style="font-size:10pt;color:#909090;font-style:italic">À intégrer après la réunion</div>';
+  }
+  inner += '</td></tr></table>';
+
+  return inner;
 }
 
 function togglePlaud() {
@@ -352,11 +482,12 @@ function newMeeting() {
   document.getElementById("plaudBody").style.display = "none";
   document.getElementById("plaudChev").textContent = "›";
   document.getElementById("dateInput").value = new Date().toISOString().split("T")[0];
+  docData = null;
   goBack();
 }
 
 function copyDoc() {
-  var txt = getFullDoc();
+  var txt = buildPlainText();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(txt).then(
       function(){ showToast("✅ Texte copié !"); },
@@ -368,78 +499,51 @@ function copyDoc() {
 }
 function fallbackCopy(txt) {
   var ta = document.createElement("textarea");
-  ta.value = txt;
-  ta.style.position = "fixed";
-  ta.style.top = "0";
-  ta.style.left = "0";
-  ta.style.opacity = "0";
-  document.body.appendChild(ta);
-  ta.focus();
-  ta.select();
+  ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.focus(); ta.select();
   try { document.execCommand("copy"); showToast("✅ Texte copié !"); }
   catch(e){ showToast("Copie impossible"); }
   document.body.removeChild(ta);
 }
 
-function escapeHtml(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-/* EXPORT WORD : pas de bibliothèque externe, génère un .doc */
 function exportWord() {
   try {
-    var text    = getFullDoc();
-    var dateVal = document.getElementById("dateInput").value;
+    var dateVal = docData ? docData.date : new Date().toISOString().split("T")[0];
+    var body = buildExportHTML();
     var html =
       '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
       '<head><meta charset="utf-8"><title>Réunion Accueil</title>' +
-      '<style>@page{margin:2cm}body{font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.5}' +
-      'pre{font-family:Calibri,Arial,sans-serif;font-size:11pt;white-space:pre-wrap;margin:0}</style></head>' +
-      '<body><pre>' + escapeHtml(text) + '</pre></body></html>';
+      '<style>@page{margin:2cm}body{font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.5;color:#1a1a1a}</style>' +
+      '</head><body>' + body + '</body></html>';
 
     var blob = new Blob(['\ufeff', html], {type: 'application/msword'});
     var url  = URL.createObjectURL(blob);
     var a    = document.createElement('a');
-    a.href     = url;
-    a.download = 'reunion_accueil_' + dateVal + '.doc';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    a.href = url; a.download = 'reunion_accueil_' + dateVal + '.doc';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
     showToast("📝 Word téléchargé !");
-  } catch(e) {
-    showToast("Erreur : " + e.message);
-  }
+  } catch(e) { showToast("Erreur : " + e.message); }
 }
 
-/* EXPORT PDF : via la fenêtre d'impression */
 function exportPDF() {
   try {
-    var text    = getFullDoc();
-    var dateVal = document.getElementById("dateInput").value;
+    var dateVal = docData ? docData.date : new Date().toISOString().split("T")[0];
+    var body = buildExportHTML();
 
     var win = window.open('', '_blank');
-    if (!win) {
-      showToast("Autorisez les pop-ups pour exporter en PDF");
-      return;
-    }
+    if (!win) { showToast("Autorisez les pop-ups pour le PDF"); return; }
 
     var content = '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">' +
       '<title>reunion_accueil_' + dateVal + '</title>' +
-      '<style>@page{size:A4;margin:20mm}' +
-      'body{font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.5;color:#000;margin:0;padding:0}' +
-      'pre{font-family:Calibri,Arial,sans-serif;font-size:11pt;white-space:pre-wrap;margin:0}</style></head>' +
-      '<body><pre>' + escapeHtml(text) + '</pre>' +
+      '<style>@page{size:A4;margin:20mm}body{font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.5;color:#1a1a1a;margin:0;padding:0}</style>' +
+      '</head><body>' + body +
       '<scr' + 'ipt>window.onload=function(){setTimeout(function(){window.print();},300);};</scr' + 'ipt>' +
       '</body></html>';
 
-    win.document.open();
-    win.document.write(content);
-    win.document.close();
+    win.document.open(); win.document.write(content); win.document.close();
     showToast("📑 Choisissez 'Enregistrer en PDF'");
-  } catch(e) {
-    showToast("Erreur : " + e.message);
-  }
+  } catch(e) { showToast("Erreur : " + e.message); }
 }
 
 function openSettings() {
@@ -469,8 +573,7 @@ function checkApiKey() {
 
 function showToast(msg) {
   var t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
+  t.textContent = msg; t.classList.add("show");
   setTimeout(function(){ t.classList.remove("show"); }, 2400);
 }
 
