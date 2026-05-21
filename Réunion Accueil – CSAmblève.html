@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)file:///C:/Users/MichelNOEL/Downloads/index_7.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Réunion Accueil">
+<meta name="theme-color" content="#0F6E56">
+<title>Réunion Accueil – CSAmblève</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  :root{
+    --teal:#0F6E56;--teal-light:#E1F5EE;--teal-mid:#5DCAA5;
+    --bg:#ffffff;--bg2:#f7f7f5;--bg3:#f0f0ec;
+    --text:#1a1a1a;--text2:#6b6b6b;--text3:#a0a0a0;
+    --border:#e0e0da;--border2:#c8c8c0;
+    --radius:10px;--radius-lg:14px;
+    --word:#1B4DB7;--pdf:#C0392B;
+    --shadow:0 2px 12px rgba(0,0,0,0.08);
+  }
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto}
+
+  /* HEADER */
+  .app-header{background:var(--teal);color:white;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .app-header-left{display:flex;align-items:center;gap:10px}
+  .app-header-icon{width:34px;height:34px;background:rgba(255,255,255,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .app-header-title{font-size:15px;font-weight:600;line-height:1.2}
+  .app-header-sub{font-size:11px;opacity:.8;margin-top:1px}
+  .settings-btn{background:none;border:none;color:white;font-size:22px;cursor:pointer;padding:4px;opacity:.85;line-height:1}
+
+  /* SECTIONS */
+  .section{padding:16px;border-bottom:1px solid var(--border)}
+  .section-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+
+  /* DATE */
+  .date-input{width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:15px;color:var(--text);background:var(--bg);outline:none;appearance:none;-webkit-appearance:none}
+  .date-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,110,86,.12)}
+
+  /* MEMBRES */
+  .members-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .member-btn{padding:9px 11px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg2);cursor:pointer;display:flex;align-items:center;gap:8px;width:100%;text-align:left;font-size:13.5px;color:var(--text);transition:all .15s;font-family:inherit}
+  .member-btn.present{background:var(--teal-light);border-color:var(--teal-mid)}
+  .member-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--border2);transition:background .15s}
+  .member-btn.present .member-dot{background:var(--teal)}
+  .member-name{flex:1}
+  .member-tag{font-size:10px;color:var(--text3)}
+  .member-btn.present .member-tag{color:var(--teal)}
+
+  /* AGENDA */
+  .agenda-textarea{width:100%;min-height:150px;padding:11px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:14px;color:var(--text);background:var(--bg);line-height:1.65;resize:vertical;font-family:inherit;outline:none}
+  .agenda-textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,110,86,.12)}
+  .agenda-hint{font-size:11.5px;color:var(--text3);margin-top:7px;display:flex;align-items:flex-start;gap:5px;line-height:1.5}
+
+  /* BOUTON GENERER */
+  .generate-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:calc(100% - 32px);margin:16px;padding:14px;border-radius:var(--radius);background:var(--teal);color:white;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .15s;box-shadow:0 3px 12px rgba(15,110,86,.3)}
+  .generate-btn:active{opacity:.85}
+  .generate-btn:disabled{opacity:.5;cursor:not-allowed}
+  .spinner{width:17px;height:17px;border:2.5px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ECRAN RESULTAT */
+  #screen-result{display:none}
+  .result-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:56px;z-index:90}
+  .back-btn{padding:7px 11px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--bg);font-size:12.5px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;white-space:nowrap}
+  .result-label{font-size:14px;font-weight:500;color:var(--text)}
+
+  .doc-container{margin:14px 14px 0;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);max-height:55vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .doc-text{padding:14px;font-size:12px;color:var(--text);line-height:1.75;white-space:pre-wrap;font-family:'Menlo','Courier New',monospace}
+
+  /* PLAUD */
+  .plaud-wrap{margin:12px 14px}
+  .plaud-toggle{width:100%;padding:11px 14px;border:1px solid var(--teal-mid);border-radius:var(--radius);background:var(--teal-light);color:var(--teal);font-size:13.5px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:inherit}
+  .plaud-toggle .chev{font-size:16px;transition:transform .2s}
+  .plaud-body{margin-top:8px;display:none}
+  .plaud-label{font-size:11.5px;color:var(--text2);margin-bottom:6px}
+  .plaud-textarea{width:100%;min-height:100px;padding:10px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;color:var(--text);background:var(--bg);resize:vertical;font-family:inherit;line-height:1.6;outline:none}
+  .plaud-textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,110,86,.12)}
+
+  /* ACTIONS */
+  .action-grid{margin:10px 14px 20px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .act-btn{padding:11px 8px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);font-size:13px;font-weight:500;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;transition:all .15s}
+  .act-btn:active{transform:scale(.97)}
+  .act-btn.primary{background:var(--teal);color:white;border-color:var(--teal)}
+  .act-btn.word{background:var(--word);color:white;border-color:var(--word)}
+  .act-btn.pdf{background:var(--pdf);color:white;border-color:var(--pdf)}
+  .act-btn:disabled{opacity:.45;cursor:not-allowed}
+  .lib-info{text-align:center;font-size:11px;color:var(--text3);margin:-4px 14px 12px;min-height:16px}
+
+  /* MODAL SETTINGS */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--bg);border-radius:20px 20px 0 0;padding:20px 20px 40px;width:100%;max-width:480px;box-shadow:0 -4px 30px rgba(0,0,0,.15)}
+  .modal-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
+  .modal-title{font-size:16px;font-weight:600;margin-bottom:4px}
+  .modal-sub{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.5}
+  .modal label{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:6px}
+  .modal input{width:100%;padding:11px 12px;border:1px solid var(--border2);border-radius:var(--radius);font-size:13px;color:var(--text);background:var(--bg2);margin-bottom:12px;outline:none;font-family:inherit}
+  .modal input:focus{border-color:var(--teal);background:var(--bg)}
+  .modal-save{width:100%;padding:13px;border-radius:var(--radius);background:var(--teal);color:white;border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px}
+  .modal-save:active{opacity:.85}
+  .modal-close{position:absolute;top:18px;right:16px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--text2)}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:white;padding:9px 18px;border-radius:30px;font-size:13px;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap;z-index:300;box-shadow:var(--shadow)}
+  .toast.show{opacity:1}
+
+  /* API KEY WARNING */
+  .api-warning{margin:14px;padding:12px 14px;background:#fff8e1;border:1px solid #f9ca24;border-radius:var(--radius);font-size:12.5px;color:#7d5a00;line-height:1.55;display:none}
+  .api-warning a{color:var(--teal);text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- ECRAN 1 : CONFIGURATION -->
+<div id="screen-config">
+  <div class="app-header">
+    <div class="app-header-left">
+      <div class="app-header-icon">🏥</div>
+      <div>
+        <div class="app-header-title">Réunion Accueil</div>
+        <div class="app-header-sub">Centre de Santé de l'Amblève</div>
+      </div>
+    </div>
+    <button class="settings-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
+  </div>
+
+  <div class="api-warning" id="apiWarning" style="display: block;">
+    ⚠️ <strong>Clé API manquante.</strong> La génération IA nécessite une clé Anthropic. Appuyez sur ⚙️ pour la configurer. <br>Sans clé, un modèle de base sera utilisé.
+  </div>
+
+  <div class="section">
+    <div class="section-label">📅 Date de la réunion</div>
+    <input type="date" class="date-input" id="dateInput">
+  </div>
+
+  <div class="section">
+    <div class="section-label">👥 Présences</div>
+    <div class="members-grid" id="membersGrid"><button class="member-btn present"><span class="member-dot"></span><span class="member-name">Michel</span><span class="member-tag">✓ présent</span></button><button class="member-btn present"><span class="member-dot"></span><span class="member-name">Jean Michel</span><span class="member-tag">✓ présent</span></button><button class="member-btn present"><span class="member-dot"></span><span class="member-name">Florence</span><span class="member-tag">✓ présent</span></button><button class="member-btn present"><span class="member-dot"></span><span class="member-name">Mélissa</span><span class="member-tag">✓ présent</span></button><button class="member-btn present"><span class="member-dot"></span><span class="member-name">Jennifer</span><span class="member-tag">✓ présent</span></button><button class="member-btn"><span class="member-dot"></span><span class="member-name">Doris</span><span class="member-tag">absent</span></button><button class="member-btn"><span class="member-dot"></span><span class="member-name">Audrey</span><span class="member-tag">absent</span></button></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📋 Points à l'ordre du jour</div>
+    <textarea class="agenda-textarea" id="agendaInput" placeholder="Dictez ou tapez les points...
+
+Ex :
+• Ressenti de l&#39;équipe
+• Point sur l&#39;accueil
+• Planification horaires"></textarea>
+    <div class="agenda-hint">
+      🎤 <span>Astuce : utilisez la dictée vocale de votre clavier pour aller plus vite !</span>
+    </div>
+  </div>
+
+  <button class="generate-btn" id="generateBtn" onclick="generate()">
+    ✨ Générer le canevas
+  </button>
+</div>
+
+<!-- ECRAN 2 : RESULTAT -->
+<div id="screen-result">
+  <div class="app-header">
+    <div class="app-header-left">
+      <div class="app-header-icon">📄</div>
+      <div>
+        <div class="app-header-title">Canevas généré</div>
+        <div class="app-header-sub" id="resultDateLabel"></div>
+      </div>
+    </div>
+    <button class="settings-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
+  </div>
+
+  <div class="result-bar">
+    <button class="back-btn" onclick="goBack()">← Modifier</button>
+    <span class="result-label" id="presenceLabel"></span>
+  </div>
+
+  <div class="doc-container">
+    <div class="doc-text" id="docText"></div>
+  </div>
+
+  <div class="plaud-wrap">
+    <button class="plaud-toggle" id="plaudToggle" onclick="togglePlaud()">
+      <span>🎙️ Intégrer résumé Plaud AI</span>
+      <span class="chev" id="plaudChev">›</span>
+    </button>
+    <div class="plaud-body" id="plaudBody">
+      <div class="plaud-label" style="margin-top:8px">Collez ici le résumé généré par Plaud AI après la réunion :</div>
+      <textarea class="plaud-textarea" id="plaudInput" placeholder="Collez le texte du résumé Plaud AI ici..."></textarea>
+    </div>
+  </div>
+
+  <div class="action-grid">
+    <button class="act-btn" onclick="copyDoc()">📋 Copier</button>
+    <button class="act-btn primary" onclick="newMeeting()">🔄 Nouvelle semaine</button>
+    <button class="act-btn word" id="wordBtn" onclick="exportWord()" disabled="">📝 Export Word</button>
+    <button class="act-btn pdf" id="pdfBtn" onclick="exportPDF()">📑 Export PDF</button>
+  </div>
+  <div class="lib-info" id="libInfo">Chargement Word…</div>
+</div>
+
+<!-- MODAL SETTINGS -->
+<div class="modal-overlay" id="settingsModal" onclick="closeSettingsOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ Paramètres</div>
+    <div class="modal-sub">La génération IA nécessite une clé API Anthropic. Elle est stockée uniquement sur votre appareil.</div>
+
+    <label>Clé API Anthropic</label>
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off">
+
+    <label>Prochain jeudi (pré-remplissage)</label>
+    <input type="text" id="infoInput" placeholder="Optionnel – note pour la prochaine réunion" style="margin-bottom:16px">
+
+    <button class="modal-save" onclick="saveSettings()">Enregistrer</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="./Réunion Accueil – CSAmblève_files/jspdf.umd.min.js.téléchargement"></script>
+<script src="./Réunion Accueil – CSAmblève_files/index.umd.min.js.téléchargement"></script>
+<script>
+const MEMBERS = [
+  {id:"michel",   name:"Michel",      present:true},
+  {id:"jm",       name:"Jean Michel", present:true},
+  {id:"florence", name:"Florence",    present:true},
+  {id:"melissa",  name:"Mélissa",     present:true},
+  {id:"jennifer", name:"Jennifer",    present:true},
+  {id:"doris",    name:"Doris",       present:false},
+  {id:"audrey",   name:"Audrey",      present:false},
+];
+
+let presence = {};
+let apiKey = "";
+
+/* ── INIT ─────────────────────────────────── */
+function init() {
+  apiKey = localStorage.getItem("csa-apikey") || "";
+  const saved = localStorage.getItem("csa-presence");
+  MEMBERS.forEach(m => presence[m.id] = saved ? JSON.parse(saved)[m.id] !== false : m.present);
+
+  const today = new Date();
+  document.getElementById("dateInput").value = today.toISOString().split("T")[0];
+
+  renderMembers();
+  checkApiKey();
+  checkLibs();
+}
+
+/* ── MEMBRES ──────────────────────────────── */
+function renderMembers() {
+  const g = document.getElementById("membersGrid");
+  g.innerHTML = "";
+  MEMBERS.forEach(m => {
+    const b = document.createElement("button");
+    b.className = "member-btn" + (presence[m.id] ? " present" : "");
+    b.innerHTML = `<span class="member-dot"></span><span class="member-name">${m.name}</span><span class="member-tag">${presence[m.id] ? "✓ présent" : "absent"}</span>`;
+    b.onclick = () => {
+      presence[m.id] = !presence[m.id];
+      localStorage.setItem("csa-presence", JSON.stringify(presence));
+      renderMembers();
+    };
+    g.appendChild(b);
+  });
+}
+
+/* ── DATE FR ──────────────────────────────── */
+function formatDateFR(v) {
+  const d = new Date(v + "T00:00:00");
+  return d.toLocaleDateString("fr-BE", {weekday:"long", day:"numeric", month:"long", year:"numeric"});
+}
+
+/* ── GENERER ──────────────────────────────── */
+async function generate() {
+  const dateVal = document.getElementById("dateInput").value;
+  const agenda = document.getElementById("agendaInput").value.trim();
+  if (!agenda) { document.getElementById("agendaInput").focus(); showToast("Ajoutez les points à l'ordre du jour"); return; }
+
+  const btn = document.getElementById("generateBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Génération en cours…';
+
+  const pres = MEMBERS.filter(m => presence[m.id]).map(m => m.name);
+  const abs  = MEMBERS.filter(m => !presence[m.id]).map(m => m.name);
+
+  let text = "";
+
+  if (apiKey) {
+    try {
+      const prompt = `Tu es un assistant de réunion pour l'équipe d'accueil du Centre de Santé de l'Amblève (Belgique).
+
+Génère un canevas de réunion hebdomadaire structuré en français à partir de :
+
+DATE : ${formatDateFR(dateVal)}
+PRÉSENTS : ${pres.join(", ")}
+${abs.length > 0 ? "ABSENTS : " + abs.join(", ") : "Tous présents"}
+RÉUNION : Réunion hebdomadaire Accueil – Centre de Santé de l'Amblève
+
+POINTS DICTÉS PAR LE RESPONSABLE :
+${agenda}
+
+Instructions :
+- En-tête clair avec date, présents, absents
+- Numéroter et titrer chaque point
+- Courte description/contexte pour chaque point
+- Après chaque point : "Notes / Décisions :" avec 2 lignes vides (—)
+- Section finale "Actions à suivre" (tableau Qui/Quoi/Quand) et "Prochaine réunion"
+- Section "Résumé Plaud AI" à intégrer après la réunion
+- Ton professionnel et bienveillant
+- Utiliser des emojis pour les sections`;
+
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-api-key": apiKey, "anthropic-version": "2023-06-01" },
+        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1200, messages: [{ role: "user", content: prompt }] })
+      });
+      const data = await res.json();
+      text = data.content?.find(b => b.type === "text")?.text || "";
+      if (!text) throw new Error("Réponse vide");
+    } catch(e) {
+      showToast("Erreur API – modèle de base utilisé");
+      text = buildTemplate(dateVal, pres, abs, agenda);
+    }
+  } else {
+    text = buildTemplate(dateVal, pres, abs, agenda);
+  }
+
+  document.getElementById("docText").textContent = text;
+  document.getElementById("resultDateLabel").textContent = formatDateFR(dateVal);
+  document.getElementById("presenceLabel").textContent = pres.length + " présents" + (abs.length ? ", " + abs.length + " absent(s)" : "");
+  document.getElementById("screen-config").style.display = "none";
+  document.getElementById("screen-result").style.display = "block";
+  window.scrollTo(0, 0);
+
+  btn.disabled = false;
+  btn.innerHTML = "✨ Générer le canevas";
+}
+
+/* ── TEMPLATE LOCAL (sans clé API) ───────── */
+function buildTemplate(dateVal, pres, abs, agendaRaw) {
+  const pts = agendaRaw.split("\n").map(l => l.replace(/^[\•\-\*\d\.]+\s*/, "").trim()).filter(Boolean);
+  let d = "";
+  d += "╔══════════════════════════════════════╗\n";
+  d += "     RÉUNION HEBDOMADAIRE – ACCUEIL\n";
+  d += "     Centre de Santé de l'Amblève\n";
+  d += "╚══════════════════════════════════════╝\n\n";
+  d += `📅 Date       : ${formatDateFR(dateVal)}\n`;
+  d += `👥 Présents   : ${pres.join(", ")}\n`;
+  if (abs.length) d += `❌ Absents    : ${abs.join(", ")}\n`;
+  d += "\n────────────────────────────────────────\n";
+  d += "📋 ORDRE DU JOUR\n";
+  d += "────────────────────────────────────────\n\n";
+  pts.forEach((pt, i) => {
+    d += `${i+1}. ${pt}\n\n`;
+    d += "   📝 Notes / Décisions :\n";
+    d += "   — ........................................\n";
+    d += "   — ........................................\n\n";
+  });
+  d += "────────────────────────────────────────\n";
+  d += "✅ ACTIONS À SUIVRE\n";
+  d += "────────────────────────────────────────\n\n";
+  for (let i = 0; i < 3; i++) {
+    d += `   Qui : ................  Quoi : .......................  Quand : ........\n`;
+  }
+  d += "\n────────────────────────────────────────\n";
+  d += "📅 PROCHAINE RÉUNION\n";
+  d += "────────────────────────────────────────\n\n";
+  d += "   Date          : ........................................\n";
+  d += "   Points prévus : ........................................\n\n";
+  d += "────────────────────────────────────────\n";
+  d += "🎙️ RÉSUMÉ PLAUD AI\n";
+  d += "────────────────────────────────────────\n\n";
+  d += "   (À intégrer après la réunion)\n\n";
+  d += "   .\n";
+  return d;
+}
+
+/* ── DOCUMENT COMPLET ─────────────────────── */
+function getFullDoc() {
+  const doc   = document.getElementById("docText").textContent;
+  const plaud = document.getElementById("plaudInput").value.trim();
+  if (!plaud) return doc;
+  return doc
+    .replace("   (À intégrer après la réunion)\n\n   .", "")
+    + "\n\n   " + plaud;
+}
+
+/* ── PLAUD TOGGLE ─────────────────────────── */
+function togglePlaud() {
+  const b = document.getElementById("plaudBody");
+  const c = document.getElementById("plaudChev");
+  const open = b.style.display === "block";
+  b.style.display = open ? "none" : "block";
+  c.textContent = open ? "›" : "⌄";
+}
+
+/* ── NAVIGATION ───────────────────────────── */
+function goBack() {
+  document.getElementById("screen-result").style.display = "none";
+  document.getElementById("screen-config").style.display = "block";
+  window.scrollTo(0, 0);
+}
+
+function newMeeting() {
+  document.getElementById("plaudInput").value = "";
+  document.getElementById("agendaInput").value = "";
+  document.getElementById("plaudBody").style.display = "none";
+  document.getElementById("plaudChev").textContent = "›";
+  document.getElementById("dateInput").value = new Date().toISOString().split("T")[0];
+  goBack();
+}
+
+/* ── COPIER ───────────────────────────────── */
+function copyDoc() {
+  navigator.clipboard.writeText(getFullDoc()).then(() => showToast("Texte copié !"));
+}
+
+/* ── EXPORT WORD ──────────────────────────── */
+async function exportWord() {
+  if (!window.docx?.Document) { showToast("Bibliothèque non chargée"); return; }
+  const btn = document.getElementById("wordBtn");
+  btn.disabled = true; btn.textContent = "⏳ Export…";
+
+  try {
+    const { Document, Packer, Paragraph, TextRun } = window.docx;
+    const text = getFullDoc();
+    const dateVal = document.getElementById("dateInput").value;
+    const lines = text.split("\n");
+    const children = [];
+
+    lines.forEach(line => {
+      const t = line.trim();
+      if (t === "") { children.push(new Paragraph({ children: [new TextRun({ text: "", size: 22 })] })); return; }
+      const isBig = t.startsWith("╔") || t.startsWith("╚") || t.includes("RÉUNION HEBDOMADAIRE");
+      const isSec = /^[📋✅📅👥❌🎙️📄🏥]/.test(t) || t.startsWith("────");
+      const isNum = /^\d+\./.test(t);
+      children.push(new Paragraph({
+        children: [new TextRun({
+          text: line, bold: isBig || isSec || isNum, size: isBig ? 26 : isSec ? 24 : 22,
+          font: "Calibri", color: t.startsWith("────") ? "999999" : "000000"
+        })],
+        spacing: { before: isSec ? 180 : 40, after: 40 }
+      }));
+    });
+
+    const doc = new Document({
+      creator: "CSAmblève – Réunion Accueil",
+      title: "Réunion Accueil " + dateVal,
+      sections: [{ properties: { page: { margin: { top: 1080, right: 1080, bottom: 1080, left: 1080 } } }, children }]
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href = url; a.download = `reunion_accueil_${dateVal}.docx`; a.click();
+    URL.revokeObjectURL(url);
+    showToast("📝 Word téléchargé !");
+  } catch(e) { showToast("Erreur Word : " + e.message); }
+
+  btn.disabled = false; btn.innerHTML = "📝 Export Word";
+}
+
+/* ── EXPORT PDF ───────────────────────────── */
+function exportPDF() {
+  if (!window.jspdf?.jsPDF) { showToast("Bibliothèque non chargée"); return; }
+  const btn = document.getElementById("pdfBtn");
+  btn.disabled = true; btn.textContent = "⏳ Export…";
+
+  try {
+    const { jsPDF } = window.jspdf;
+    const text    = getFullDoc();
+    const dateVal = document.getElementById("dateInput").value;
+    const pdf     = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+
+    const clean = s => s.replace(/[\u{1F300}-\u{1FFFF}]/gu, "").replace(/[╔╚═╗╝║]/g, "-").replace(/[────]/g, "-").trim();
+
+    const lines = text.split("\n");
+    const margin = 18, maxW = 174;
+    let y = 22;
+
+    pdf.setFont("helvetica", "normal");
+
+    lines.forEach(line => {
+      const cl = clean(line);
+      if (cl === "") { y += 3; return; }
+
+      const isBold = /^(RÉUNION|DATE|PRÉSENTS|ABSENTS|ORDRE|ACTIONS|RÉSUMÉ|PROCHAINE|\d+\.)/.test(cl) || cl.startsWith("---") || cl.startsWith("===");
+      if (isBold) { pdf.setFontSize(11); pdf.setFont("helvetica", "bold"); y += 2; }
+      else         { pdf.setFontSize(10); pdf.setFont("helvetica", "normal"); }
+
+      const wrapped = pdf.splitTextToSize(cl, maxW);
+      if (y + wrapped.length * 5.5 > 285) { pdf.addPage(); y = 18; }
+      pdf.text(wrapped, margin, y);
+      y += wrapped.length * 5.5;
+    });
+
+    pdf.save(`reunion_accueil_${dateVal}.pdf`);
+    showToast("📑 PDF téléchargé !");
+  } catch(e) { showToast("Erreur PDF : " + e.message); }
+
+  btn.disabled = false; btn.innerHTML = "📑 Export PDF";
+}
+
+/* ── SETTINGS ─────────────────────────────── */
+function openSettings() {
+  document.getElementById("apiKeyInput").value = apiKey ? "sk-ant-…(enregistrée)" : "";
+  document.getElementById("settingsModal").classList.add("open");
+}
+function closeSettingsOutside(e) {
+  if (e.target === document.getElementById("settingsModal")) closeSettings();
+}
+function closeSettings() {
+  document.getElementById("settingsModal").classList.remove("open");
+}
+function saveSettings() {
+  const v = document.getElementById("apiKeyInput").value.trim();
+  if (v && !v.includes("enregistrée")) {
+    apiKey = v;
+    localStorage.setItem("csa-apikey", v);
+  }
+  closeSettings();
+  checkApiKey();
+  showToast("✅ Paramètres enregistrés");
+}
+function checkApiKey() {
+  document.getElementById("apiWarning").style.display = apiKey ? "none" : "block";
+}
+
+/* ── LIBS ─────────────────────────────────── */
+function checkLibs() {
+  const jok  = !!(window.jspdf?.jsPDF);
+  const dok  = !!(window.docx?.Document);
+  const info = document.getElementById("libInfo");
+  if (jok && dok) {
+    info.textContent = "";
+    document.getElementById("wordBtn").disabled = false;
+    document.getElementById("pdfBtn").disabled  = false;
+  } else {
+    const missing = [];
+    if (!dok) missing.push("Word");
+    if (!jok) missing.push("PDF");
+    info.textContent = "Chargement " + missing.join(" & ") + "…";
+    document.getElementById("wordBtn").disabled = !dok;
+    document.getElementById("pdfBtn").disabled  = !jok;
+    setTimeout(checkLibs, 2500);
+  }
+}
+
+/* ── TOAST ────────────────────────────────── */
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+/* ── START ────────────────────────────────── */
+init();
+
+// Pré-remplissage pour aujourd'hui
+document.getElementById("agendaInput").value =
+  "• Ressenti de l'équipe face à la situation actuelle (deux absents)\n• Point sur l'accueil : rappel télédermatoscopie (si appel pour dermatologue absent, proposer bilan ici au centre)\n• Planification des horaires des semaines à venir – à faire ensemble";
+</script>
+
+
+</body></html>
